@@ -1,12 +1,11 @@
 import { Routes } from '@angular/router';
 import { CodeEditorComponent } from './components/code-editor/code-editor.component';
-import { generateSessionId } from './core/utils/session.utils';
+import { RedirectComponent } from './shared/components/redirect/redirect.component';
 
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: generateSessionId(),
-    pathMatch: 'full',
+    component: RedirectComponent,
   },
   {
     path: ':id',
@@ -14,6 +13,6 @@ export const routes: Routes = [
   },
   {
     path: '**',
-    redirectTo: generateSessionId(),
+    component: RedirectComponent,
   },
 ];
