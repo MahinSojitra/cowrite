@@ -40,7 +40,7 @@ export class CodeEditorComponent implements OnInit, OnDestroy {
         const newSessionId = params.get('id') || 'new';
         if (newSessionId !== this.sessionId) {
           this.sessionId = newSessionId;
-          this.socketService.connect(environment.webSocketUrlLocal);
+          this.socketService.connect(environment.webSocketUrl);
           this.socketService.joinRoom(this.sessionId);
 
           this.syncSubscription?.unsubscribe();
