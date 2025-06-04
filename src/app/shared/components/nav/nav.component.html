@@ -1,0 +1,17 @@
+<!-- Header -->
+<nav class="navbar navbar-expand-lg bg-light border-bottom">
+  <div class="container-fluid d-flex justify-content-between align-items-center">
+    <a class="navbar-brand d-flex align-items-center text-success fw-bold" routerLink="/">
+      <i class="bi bi-code-square me-2"></i>
+      CoWrite
+    </a>
+
+    <!-- Code Badge -->
+    <span class="text-truncate bg-success text-white px-2 py-1 d-flex align-items-center gap-1 rounded-3 cursor-pointer"
+      [title]="isCopied ? 'Copied!' : 'Click to copy URL'" (click)="copyToClipboard()"
+      style="cursor: pointer; transition: all 0.3s ease">
+      <i class="bi" [class.bi-door-closed]="!isCopied" [class.bi-clipboard-check]="isCopied"></i>
+      {{ isCopied ? 'Copied!' : (code || 'N/A') }}
+    </span>
+  </div>
+</nav>

@@ -1,0 +1,49 @@
+<div class="container-fluid p-0 vh-100 d-flex flex-column">
+  <app-nav [code]="sessionId"></app-nav>
+
+  <!-- Main Content -->
+  <div class="container-fluid p-3 flex-grow-1 overflow-auto">
+    <div class="row h-100">
+      <div class="col-12 h-100 d-flex flex-column">
+        <div class="card shadow-sm flex-grow-1 d-flex flex-column">
+          <!-- Card Header with Buttons and Status -->
+          <div class="card-header d-flex justify-content-between align-items-center bg-white border-bottom px-3 py-2">
+            <!-- Toolbar Buttons -->
+            <div class="d-flex align-items-center">
+              <button class="btn btn-sm btn-light border text-success" title="Copy to clipboard">
+                <i class="bi bi-clipboard"></i>
+              </button>
+            </div>
+
+            <!-- Room & Last Modified Info -->
+            <div class="d-flex flex-column align-items-end gap-1">
+              <div *ngIf="lastModified" class="badge bg-success rounded-pill text-white">
+                <i class="bi bi-clock-history me-1"></i>
+                {{ lastModified | fancy }}
+              </div>
+            </div>
+          </div>
+
+          <!-- Editor Body -->
+          <div class="card-body p-0">
+            <textarea class="form-control border-0 rounded-0 h-100 w-100" [(ngModel)]="code"
+              (ngModelChange)="onCodeChange()" spellcheck="false" style="
+                font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+                font-size: 14px;
+                line-height: 1.5;
+                resize: none;
+              " placeholder="Start typing your code here..."></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="bg-light border-top py-2">
+    <div class="container-fluid text-center text-muted small">
+      <i class="bi bi-lightning-charge-fill text-warning me-1"></i>
+      Real-time collaboration enabled
+    </div>
+  </footer>
+</div>
