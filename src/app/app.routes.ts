@@ -9,7 +9,10 @@ export const routes: Routes = [
   },
   {
     path: ':id',
-    component: CodeEditorComponent,
+    loadComponent: () =>
+      import('./components/code-editor/code-editor.component').then(
+        (m) => m.CodeEditorComponent
+      ),
   },
   {
     path: '**',
