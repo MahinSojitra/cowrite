@@ -7,18 +7,32 @@
       <div class="col-12 h-100 d-flex flex-column">
         <div class="card shadow-sm flex-grow-1 d-flex flex-column border-2">
           <!-- Card Header with Buttons and Status -->
-          <div class="card-header d-flex justify-content-between align-items-center px-3 py-2">
+          <div
+            class="card-header d-flex justify-content-between align-items-center px-3 py-2"
+          >
             <!-- Toolbar Buttons -->
             <div class="d-flex gap-2">
-              <app-copy-button [textToCopy]="code" [isLoading]="isSyncing"></app-copy-button>
-              <app-download-button [textToSave]="code" [isLoading]="isSyncing"
-                [fileName]="sessionId"></app-download-button>
+              <app-copy-button
+                [textToCopy]="code"
+                [isLoading]="isSyncing"
+              ></app-copy-button>
+              <app-download-button
+                [textToSave]="code"
+                [isLoading]="isSyncing"
+                [fileName]="sessionId"
+              ></app-download-button>
             </div>
 
             <!-- Room & Last Modified Info -->
             <div class="d-flex flex-column align-items-end gap-1">
-              <div *ngIf="isSyncing" class="text-muted small d-flex align-items-center">
-                <div class="spinner-border text-success spinner-border-sm me-2" role="status">
+              <div
+                *ngIf="isSyncing"
+                class="text-muted small d-flex align-items-center"
+              >
+                <div
+                  class="spinner-border text-success spinner-border-sm me-2"
+                  role="status"
+                >
                   <span class="visually-hidden">Loading...</span>
                 </div>
                 Syncing...
@@ -33,11 +47,11 @@
 
           <!-- Editor Body -->
           <div class="card-body p-0 position-relative">
-
             <!-- Loading Overlay -->
             <ng-container *ngIf="isSyncing">
               <div
-                class="position-absolute w-100 h-100 bg-white bg-opacity-75 d-flex flex-column justify-content-center align-items-center z-3">
+                class="position-absolute w-100 h-100 bg-white bg-opacity-75 d-flex flex-column justify-content-center align-items-center z-3"
+              >
                 <div class="spinner-border text-success mb-3" role="status">
                   <span class="visually-hidden">Loading...</span>
                 </div>
@@ -49,24 +63,26 @@
 
             <!-- Code Editor -->
             <ng-container *ngIf="!isSyncing">
-              <textarea class="form-control border-0 rounded-0 h-100 w-100" [(ngModel)]="code"
-                (ngModelChange)="onCodeChange()" spellcheck="false" style="
-                          font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
-                          font-size: 14px;
-                          line-height: 1.5;
-                          resize: none;
-                        " placeholder="Start typing your code here..."></textarea>
+              <textarea
+                class="form-control border-0 rounded-0 h-100 w-100"
+                [(ngModel)]="code"
+                (ngModelChange)="onCodeChange()"
+                spellcheck="false"
+                style="
+                  font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+                  font-size: 14px;
+                  line-height: 1.5;
+                  resize: none;
+                "
+                placeholder="Start typing your code here..."
+              ></textarea>
             </ng-container>
-
           </div>
 
           <div class="card-footer">
             <div class="d-flex justify-content-between align-items-center">
-
               <!-- Left: Character count -->
-              <div class="text-muted small">
-                {{ code.length }} characters.
-              </div>
+              <div class="text-muted small">{{ code.length }} characters.</div>
 
               <!-- Right: Sync/Save status -->
               <div class="text-muted small d-flex align-items-center">
