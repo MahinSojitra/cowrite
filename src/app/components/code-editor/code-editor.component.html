@@ -69,27 +69,20 @@
               </div>
 
               <!-- Right: Sync/Save status -->
+              <!-- Right: Sync/Save status -->
               <div class="text-muted small d-flex align-items-center">
-                <ng-container *ngIf="isConnecting || isSyncing">
-                  <span>
-                    <i class="bi bi-repeat me-1 text-success"></i>
-                    Syncing...
-                  </span>
-                </ng-container>
-
-                <ng-container *ngIf="!isConnecting && !isSyncing && isSaving">
-                  <span>
-                    <i class="bi bi-cloud-upload-fill text-success"></i>
-                    Saving...
-                  </span>
-                </ng-container>
-
-                <ng-container *ngIf="!isConnecting && !isSyncing && !isSaving">
-                  <span>
-                    <i class="bi bi-check-circle-fill text-success"></i>
-                    Saved.
-                  </span>
-                </ng-container>
+                <span *ngIf="status === 'syncing'">
+                  <i class="bi bi-repeat me-1 text-success"></i>
+                  Syncing...
+                </span>
+                <span *ngIf="status === 'saving'">
+                  <i class="bi bi-cloud-upload-fill text-success"></i>
+                  Saving...
+                </span>
+                <span *ngIf="status === 'saved'">
+                  <i class="bi bi-check-circle-fill text-success"></i>
+                  Saved.
+                </span>
               </div>
             </div>
           </div>

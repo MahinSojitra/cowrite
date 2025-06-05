@@ -95,4 +95,14 @@ export class CodeEditorComponent implements OnInit, OnDestroy {
     this.socketService.disconnect();
     clearTimeout(this.saveTimeout);
   }
+
+  get status(): 'syncing' | 'saving' | 'saved' {
+    if (this.isConnecting || this.isSyncing) {
+      return 'syncing';
+    }
+    if (this.isSaving) {
+      return 'saving';
+    }
+    return 'saved';
+  }
 }
