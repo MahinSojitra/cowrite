@@ -36,9 +36,10 @@ export class CodeEditorComponent implements OnInit, OnDestroy {
   code = '';
   sessionId = 'new';
   lastModified: Date | null = null;
-  isConnecting = false;
+
   isSyncing = false;
   isSaving = false;
+
   private saveTimeout?: any;
   private syncSubscription?: Subscription;
   private routeSubscription?: Subscription;
@@ -50,32 +51,29 @@ export class CodeEditorComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    if (isPlatformBrowser(this.platformId)) {
-      this.routeSubscription = this.route.paramMap.subscribe((params) => {
-        const newSessionId = params.get('id') || 'new';
+    if (!isPlatformBrowser(this.platformId)) return;
 
-        if (newSessionId !== this.sessionId) {
-          this.sessionId = newSessionId;
-          this.isConnecting = true;
+    this.routeSubscription = this.route.paramMap.subscribe((params) => {
+      const newSessionId = params.get('id') || 'new';
 
-          this.socketService.connect(environment.webSocketUrl);
-          this.socketService.joinRoom(this.sessionId);
+      if (newSessionId !== this.sessionId) {
+        this.sessionId = newSessionId;
+        this.isSyncing = true;
 
-          this.syncSubscription?.unsubscribe();
-          this.syncSubscription = this.socketService
-            .onSync()
-            .subscribe((data) => {
-              this.isConnecting = false;
-              this.isSyncing = true;
+        this.socketService.connect(environment.webSocketUrl);
+        this.socketService.joinRoom(this.sessionId);
 
-              this.code = data.content;
-              this.lastModified = new Date(data.lastModified);
+        this.syncSubscription?.unsubscribe();
+        this.syncSubscription = this.socketService
+          .onSync()
+          .subscribe((data) => {
+            this.code = data.content;
+            this.lastModified = new Date(data.lastModified);
 
-              this.isSyncing = false;
-            });
-        }
-      });
-    }
+            this.isSyncing = false;
+          });
+      }
+    });
   }
 
   onCodeChange(): void {
@@ -94,15 +92,5 @@ export class CodeEditorComponent implements OnInit, OnDestroy {
     this.routeSubscription?.unsubscribe();
     this.socketService.disconnect();
     clearTimeout(this.saveTimeout);
-  }
-
-  get status(): 'syncing' | 'saving' | 'saved' {
-    if (this.isConnecting || this.isSyncing) {
-      return 'syncing';
-    }
-    if (this.isSaving) {
-      return 'saving';
-    }
-    return 'saved';
   }
 }

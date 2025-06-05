@@ -10,14 +10,14 @@
           <div class="card-header d-flex justify-content-between align-items-center px-3 py-2">
             <!-- Toolbar Buttons -->
             <div class="d-flex gap-2">
-              <app-copy-button [textToCopy]="code" [isLoading]="isConnecting || isSyncing"></app-copy-button>
-              <app-download-button [textToSave]="code" [isLoading]="isConnecting || isSyncing"
+              <app-copy-button [textToCopy]="code" [isLoading]="isSyncing"></app-copy-button>
+              <app-download-button [textToSave]="code" [isLoading]="isSyncing"
                 [fileName]="sessionId"></app-download-button>
             </div>
 
             <!-- Room & Last Modified Info -->
             <div class="d-flex flex-column align-items-end gap-1">
-              <div *ngIf="isConnecting || isSyncing" class="text-muted small d-flex align-items-center">
+              <div *ngIf="isSyncing" class="text-muted small d-flex align-items-center">
                 <div class="spinner-border text-success spinner-border-sm me-2" role="status">
                   <span class="visually-hidden">Loading...</span>
                 </div>
@@ -35,20 +35,20 @@
           <div class="card-body p-0 position-relative">
 
             <!-- Loading Overlay -->
-            <ng-container *ngIf="isConnecting || isSyncing">
+            <ng-container *ngIf="isSyncing">
               <div
                 class="position-absolute w-100 h-100 bg-white bg-opacity-75 d-flex flex-column justify-content-center align-items-center z-3">
                 <div class="spinner-border text-success mb-3" role="status">
                   <span class="visually-hidden">Loading...</span>
                 </div>
                 <p class="text-muted small m-0">
-                  {{ isConnecting ? 'Just a sec, setting things up...' : 'Bringing everything up to speed for you!' }}
+                  Just a sec, setting things up...
                 </p>
               </div>
             </ng-container>
 
             <!-- Code Editor -->
-            <ng-container *ngIf="!isConnecting && !isSyncing">
+            <ng-container *ngIf="!isSyncing">
               <textarea class="form-control border-0 rounded-0 h-100 w-100" [(ngModel)]="code"
                 (ngModelChange)="onCodeChange()" spellcheck="false" style="
                           font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
@@ -69,20 +69,29 @@
               </div>
 
               <!-- Right: Sync/Save status -->
-              <!-- Right: Sync/Save status -->
               <div class="text-muted small d-flex align-items-center">
-                <span *ngIf="status === 'syncing'">
-                  <i class="bi bi-repeat me-1 text-success"></i>
-                  Syncing...
-                </span>
-                <span *ngIf="status === 'saving'">
-                  <i class="bi bi-cloud-upload-fill text-success"></i>
-                  Saving...
-                </span>
-                <span *ngIf="status === 'saved'">
-                  <i class="bi bi-check-circle-fill text-success"></i>
-                  Saved.
-                </span>
+                <ng-container *ngIf="isSyncing; else notSyncing">
+                  <span>
+                    <i class="bi bi-repeat me-1 text-success"></i>
+                    Syncing...
+                  </span>
+                </ng-container>
+
+                <ng-template #notSyncing>
+                  <ng-container *ngIf="isSaving; else saved">
+                    <span>
+                      <i class="bi bi-cloud-upload-fill text-success"></i>
+                      Saving...
+                    </span>
+                  </ng-container>
+                </ng-template>
+
+                <ng-template #saved>
+                  <span>
+                    <i class="bi bi-check-circle-fill text-success"></i>
+                    Saved.
+                  </span>
+                </ng-template>
               </div>
             </div>
           </div>
