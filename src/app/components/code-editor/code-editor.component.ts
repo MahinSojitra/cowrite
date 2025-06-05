@@ -14,11 +14,22 @@ import { CommonModule } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { FancyDatePipe } from '../../core/pipes/fancy-date.pipe';
 import { NavComponent } from '../../shared/components/nav/nav.component';
+import { FooterComponent } from '../../shared/components/footer/footer.component';
+import { CopyButtonComponent } from '../../shared/components/copy-button/copy-button.component';
+import { DownloadButtonComponent } from '../../shared/components/download-button/download-button.component';
 
 @Component({
   selector: 'app-code-editor',
   standalone: true,
-  imports: [FormsModule, CommonModule, FancyDatePipe, NavComponent],
+  imports: [
+    FormsModule,
+    CommonModule,
+    FancyDatePipe,
+    NavComponent,
+    FooterComponent,
+    CopyButtonComponent,
+    DownloadButtonComponent,
+  ],
   templateUrl: './code-editor.component.html',
 })
 export class CodeEditorComponent implements OnInit, OnDestroy {
@@ -27,6 +38,8 @@ export class CodeEditorComponent implements OnInit, OnDestroy {
   lastModified: Date | null = null;
   isConnecting = false;
   isSyncing = false;
+  isSaving = false;
+  private saveTimeout?: any;
   private syncSubscription?: Subscription;
   private routeSubscription?: Subscription;
 
@@ -67,12 +80,19 @@ export class CodeEditorComponent implements OnInit, OnDestroy {
 
   onCodeChange(): void {
     this.lastModified = new Date();
-    this.socketService.syncContent(this.code);
+    this.isSaving = true;
+
+    clearTimeout(this.saveTimeout);
+    this.saveTimeout = setTimeout(() => {
+      this.socketService.syncContent(this.code);
+      this.isSaving = false;
+    }, 500);
   }
 
   ngOnDestroy(): void {
     this.syncSubscription?.unsubscribe();
     this.routeSubscription?.unsubscribe();
     this.socketService.disconnect();
+    clearTimeout(this.saveTimeout);
   }
 }

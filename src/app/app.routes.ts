@@ -15,6 +15,6 @@ export const routes: Routes = [
   },
   {
     path: '**',
-    component: RedirectComponent,
+    redirectTo: '',
   },
 ];

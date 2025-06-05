@@ -97,12 +97,6 @@
             "styles": ["src/styles.scss"],
             "scripts": []
           }
-        },
-        "prerender": {
-          "builder": "@angular-devkit/build-angular:prerender",
-          "options": {
-            "routes": ["/"]
-          }
         }
       }
     }
