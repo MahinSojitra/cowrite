@@ -37,7 +37,7 @@ export class SocketService {
   syncContent(content: string): void {
     this.socket.emit('sync', {
       roomId: this.currentRoom,
-      content
+      content,
     });
   }
 

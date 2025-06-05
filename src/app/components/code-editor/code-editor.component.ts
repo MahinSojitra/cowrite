@@ -25,6 +25,8 @@ export class CodeEditorComponent implements OnInit, OnDestroy {
   code = '';
   sessionId = 'new';
   lastModified: Date | null = null;
+  isConnecting = false;
+  isSyncing = false;
   private syncSubscription?: Subscription;
   private routeSubscription?: Subscription;
 
@@ -38,8 +40,11 @@ export class CodeEditorComponent implements OnInit, OnDestroy {
     if (isPlatformBrowser(this.platformId)) {
       this.routeSubscription = this.route.paramMap.subscribe((params) => {
         const newSessionId = params.get('id') || 'new';
+
         if (newSessionId !== this.sessionId) {
           this.sessionId = newSessionId;
+          this.isConnecting = true;
+
           this.socketService.connect(environment.webSocketUrl);
           this.socketService.joinRoom(this.sessionId);
 
@@ -47,10 +52,13 @@ export class CodeEditorComponent implements OnInit, OnDestroy {
           this.syncSubscription = this.socketService
             .onSync()
             .subscribe((data) => {
-              if (data.content !== this.code) {
-                this.code = data.content;
-                this.lastModified = data.lastModified;
-              }
+              this.isConnecting = false;
+              this.isSyncing = true;
+
+              this.code = data.content;
+              this.lastModified = new Date(data.lastModified);
+
+              this.isSyncing = false;
             });
         }
       });
@@ -58,6 +66,7 @@ export class CodeEditorComponent implements OnInit, OnDestroy {
   }
 
   onCodeChange(): void {
+    this.lastModified = new Date();
     this.socketService.syncContent(this.code);
   }
 

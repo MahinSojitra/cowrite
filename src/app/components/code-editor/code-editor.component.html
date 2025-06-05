@@ -5,7 +5,7 @@
   <div class="container-fluid p-3 flex-grow-1 overflow-auto">
     <div class="row h-100">
       <div class="col-12 h-100 d-flex flex-column">
-        <div class="card shadow-sm flex-grow-1 d-flex flex-column">
+        <div class="card shadow-sm flex-grow-1 d-flex flex-column border-2">
           <!-- Card Header with Buttons and Status -->
           <div class="card-header d-flex justify-content-between align-items-center bg-white border-bottom px-3 py-2">
             <!-- Toolbar Buttons -->
@@ -17,22 +17,47 @@
 
             <!-- Room & Last Modified Info -->
             <div class="d-flex flex-column align-items-end gap-1">
-              <div *ngIf="lastModified" class="badge bg-success rounded-pill text-white">
-                <i class="bi bi-clock-history me-1"></i>
-                {{ lastModified | fancy }}
+              <div *ngIf="isConnecting || isSyncing" class="text-muted small d-flex align-items-center">
+                <div class="spinner-border text-success spinner-border-sm me-2" role="status">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
+                Syncing...
               </div>
+
+              <code *ngIf="lastModified" class="text-muted small">
+                <i class="bi bi-clock-history"></i>
+                {{ lastModified | fancy }}
+              </code>
             </div>
           </div>
 
           <!-- Editor Body -->
-          <div class="card-body p-0">
-            <textarea class="form-control border-0 rounded-0 h-100 w-100" [(ngModel)]="code"
-              (ngModelChange)="onCodeChange()" spellcheck="false" style="
-                font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
-                font-size: 14px;
-                line-height: 1.5;
-                resize: none;
-              " placeholder="Start typing your code here..."></textarea>
+          <div class="card-body p-0 position-relative">
+
+            <!-- Loading Overlay -->
+            <ng-container *ngIf="isConnecting || isSyncing">
+              <div
+                class="position-absolute w-100 h-100 bg-white bg-opacity-75 d-flex flex-column justify-content-center align-items-center z-3">
+                <div class="spinner-border text-success mb-3" role="status">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
+                <p class="text-muted small m-0">
+                  {{ isConnecting ? 'Just a sec, setting things up...' : 'Bringing everything up to speed for you!' }}
+                </p>
+              </div>
+            </ng-container>
+
+            <!-- Code Editor -->
+            <ng-container *ngIf="!isConnecting && !isSyncing">
+              <textarea class="form-control border-0 rounded-0 h-100 w-100" [(ngModel)]="code"
+                (ngModelChange)="onCodeChange()" spellcheck="false" style="
+                          font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+                          font-size: 14px;
+                          line-height: 1.5;
+                          resize: none;
+                        " placeholder="Start typing your code here..."></textarea>
+            </ng-container>
+
           </div>
         </div>
       </div>
@@ -40,10 +65,15 @@
   </div>
 
   <!-- Footer -->
-  <footer class="bg-light border-top py-2">
-    <div class="container-fluid text-center text-muted small">
-      <i class="bi bi-lightning-charge-fill text-warning me-1"></i>
-      Real-time collaboration enabled
+  <footer class="bg-success-subtle border-top py-2">
+    <div class="container-fluid d-flex justify-content-between align-items-center small text-muted">
+      <div class="d-flex align-items-center text-white border px-2 rounded bg-success">
+        <i class="bi bi-lightning-charge-fill text-warning me-2" aria-hidden="true"></i>
+        <span>Real-time collaboration enabled</span>
+      </div>
+      <div class="text-muted">
+        &copy; 2025 CoWrite
+      </div>
     </div>
   </footer>
 </div>
