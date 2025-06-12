@@ -5,14 +5,24 @@
   <div class="container-fluid p-3 flex-grow-1 overflow-auto">
     <div class="row h-100">
       <div class="col-12 h-100 d-flex flex-column">
-        <div class="card shadow-sm flex-grow-1 d-flex flex-column border-2">
+        <div
+          class="card shadow-sm flex-grow-1 d-flex flex-column border-1 code-editor-card"
+        >
           <!-- Card Header with Buttons and Status -->
-          <div class="card-header d-flex justify-content-between align-items-center px-3 py-2">
+          <div
+            class="card-header d-flex justify-content-between align-items-center px-3 py-2 code-editor-card-header"
+          >
             <!-- Toolbar Buttons -->
             <div class="d-flex gap-2">
-              <app-copy-button [textToCopy]="code" [isLoading]="isSyncing || code.length === 0"></app-copy-button>
-              <app-download-button [textToSave]="code" [isLoading]="isSyncing || code.length === 0"
-                [fileName]="sessionId"></app-download-button>
+              <app-copy-button
+                [textToCopy]="code"
+                [isLoading]="isSyncing || code.length === 0"
+              ></app-copy-button>
+              <app-download-button
+                [textToSave]="code"
+                [isLoading]="isSyncing || code.length === 0"
+                [fileName]="sessionId"
+              ></app-download-button>
             </div>
 
             <!-- Room & Last Modified Info -->
@@ -36,7 +46,8 @@
             <!-- Loading Overlay -->
             <ng-container *ngIf="isSyncing">
               <div
-                class="position-absolute w-100 h-100 bg-white bg-opacity-75 d-flex flex-column justify-content-center align-items-center z-3">
+                class="position-absolute w-100 h-100 bg-opacity-75 d-flex flex-column justify-content-center align-items-center z-3 loading-overlay"
+              >
                 <div class="spinner-border text-success mb-3" role="status">
                   <span class="visually-hidden">Loading...</span>
                 </div>
@@ -48,17 +59,23 @@
 
             <!-- Code Editor -->
             <ng-container *ngIf="!isSyncing">
-              <textarea class="form-control border-0 rounded-0 h-100 w-100" [(ngModel)]="code"
-                (ngModelChange)="onCodeChange()" spellcheck="false" style="
+              <textarea
+                class="form-control border-0 rounded-0 h-100 w-100 code-editor-textarea"
+                [(ngModel)]="code"
+                (ngModelChange)="onCodeChange()"
+                spellcheck="false"
+                style="
                   font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
                   font-size: 14px;
                   line-height: 1.5;
                   resize: none;
-                " placeholder="Start typing your code here..."></textarea>
+                "
+                placeholder="Start typing your code here..."
+              ></textarea>
             </ng-container>
           </div>
 
-          <div class="card-footer">
+          <div class="card-footer code-editor-card-footer">
             <div class="d-flex justify-content-between align-items-center">
               <!-- Left: Character count -->
               <div class="text-muted small">{{ code.length }} characters.</div>
