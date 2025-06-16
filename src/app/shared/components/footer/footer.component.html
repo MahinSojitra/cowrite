@@ -1,15 +1,25 @@
 <!-- Footer -->
 <footer class="bg-success-subtle border-top py-2 footer-dark-theme">
-  <div
-    class="container-fluid d-flex justify-content-between align-items-center small text-muted"
-  >
+  <div class="container-fluid d-flex justify-content-between align-items-center small text-muted">
     <div class="d-flex align-items-center text-white px-2 rounded bg-success">
-      <i
-        class="bi bi-lightning-charge-fill text-warning me-2"
-        aria-hidden="true"
-      ></i>
+      <i class="bi bi-lightning-charge-fill text-warning me-2" aria-hidden="true"></i>
       <span>Real-time collaboration enabled</span>
     </div>
     <div class="text-muted">&copy; 2025 CoWrite</div>
+    <div>
+      <!-- Theme Toggle -->
+      <button class="btn btn-sm btn-light d-flex align-items-center rounded-pill border-2" (click)="toggleTheme()"
+        [title]="(isDarkTheme$ | async) ? 'Switch to Light Theme' : 'Switch to Dark Theme'">
+        <i class="bi theme-icon me-2" [class.bi-moon-fill]="!(isDarkTheme$ | async)"
+          [class.bi-sun-fill]="isDarkTheme$ | async" [class.rotate-animation]="isAnimating"></i>
+        <span class="small text-muted">
+          {{
+          (isDarkTheme$ | async)
+          ? "Light Theme"
+          : "Dark Theme"
+          }}
+        </span>
+      </button>
+    </div>
   </div>
 </footer>

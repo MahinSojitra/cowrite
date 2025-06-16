@@ -12,12 +12,6 @@ import { ThemeService } from '../../../core/services/theme.service';
 export class NavComponent {
   @Input() code!: string;
   isCopied = false;
-  isDarkTheme$;
-  isAnimating = false;
-
-  constructor(private themeService: ThemeService) {
-    this.isDarkTheme$ = this.themeService.isDarkTheme$;
-  }
 
   copyToClipboard(): void {
     const url = window.location.href;
@@ -27,13 +21,5 @@ export class NavComponent {
         this.isCopied = false;
       }, 2000);
     });
-  }
-
-  toggleTheme(): void {
-    this.isAnimating = true;
-    this.themeService.toggleTheme();
-    setTimeout(() => {
-      this.isAnimating = false;
-    }, 500);
   }
 }
