@@ -10,6 +10,26 @@
           <div class="card-header d-flex justify-content-between align-items-center px-3 py-2">
             <!-- Toolbar Buttons -->
             <div class="d-flex gap-2">
+              <!-- Undo/Redo buttons -->
+              <div class="btn-group" role="group" aria-label="Undo/Redo">
+                <button 
+                  type="button" 
+                  class="btn btn-outline-secondary btn-sm" 
+                  [disabled]="!canUndo || isSyncing" 
+                  (click)="undo()"
+                  title="Undo (Ctrl+Z)">
+                  <i class="bi bi-arrow-counterclockwise"></i>
+                </button>
+                <button 
+                  type="button" 
+                  class="btn btn-outline-secondary btn-sm" 
+                  [disabled]="!canRedo || isSyncing" 
+                  (click)="redo()"
+                  title="Redo (Ctrl+Y)">
+                  <i class="bi bi-arrow-clockwise"></i>
+                </button>
+              </div>
+              
               <app-copy-button [textToCopy]="code" [isLoading]="isSyncing || code.length === 0"></app-copy-button>
               <app-download-button [textToSave]="code" [isLoading]="isSyncing || code.length === 0"
                 [fileName]="sessionId"></app-download-button>
